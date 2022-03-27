@@ -24,7 +24,6 @@ public class Main {
 		A = initializeMatrix(a1, a2);
 		double[][] AT = transposeMatrix(A);
 		double[][] AAT = multiplyMatrix(AT, A);
-		double[][] ooAT = new double[AAT.length][AAT[0].length];
 		double[] ATy = multiplyVector(y, AT);
 		double[][] adj = invert(AAT);
 		// result[0] is a //result[1] is b
@@ -90,7 +89,7 @@ public class Main {
 			}
 		}
 	}
-
+	//put a1 and a2 into 1 matrix
 	public static double[][] initializeMatrix(double[] a1, int[] a2) {
 		double[][] result = new double[ir.getLength()][2];
 		for (int i = 0; i < ir.getLength(); i++) {
@@ -120,7 +119,7 @@ public class Main {
 		}
 	}
 
-	// multiply 2 matrixes
+	// multiply 2 matrices
 	public static double[][] multiplyMatrix(double[][] aT, double[][] a) {
 		int RA = aT.length; // row A
 		int CB = a[0].length; // column B
@@ -145,12 +144,10 @@ public class Main {
 
 				}
 			}
-
 			return result;
 		}
-
 	}
-
+	//transpose a matrix
 	public static double[][] transposeMatrix(double[][] a) {
 		int n = ir.getLength();
 		double[][] transpose = new double[2][n]; // 2 is a1 a2 but transpose so that 2 will be the row
@@ -161,7 +158,7 @@ public class Main {
 		}
 		return transpose;
 	}
-
+	//display matrix
 	public static void displayMatrix(double[][] ooAT) {
 		for (int i = 0; i < ooAT.length; i++) {
 			for (int j = 0; j < ooAT[i].length; j++) {
@@ -170,16 +167,7 @@ public class Main {
 			System.out.println(" ");
 		}
 	}
-
-	public static void displayMatrix(int[][] AT) {
-		for (int i = 0; i < AT.length; i++) {
-			for (int j = 0; j < AT[i].length; j++) {
-				System.out.println(AT[i][j]);
-			}
-			System.out.println(" ");
-		}
-	}
-
+	//display vector
 	public static void displayVector(double[] aTy) {
 		for (int i = 0; i < aTy.length; i++) {
 			System.out.println(String.format("%.10f", aTy[i]));
@@ -199,6 +187,7 @@ public class Main {
 	 * double dert = determinant(a); for(int i = 0; i < R; i++) { for(int j = 0; j <
 	 * C; j++) { invert[i][j] = dert * a[i][j]; } } return invert; }
 	 */
+	//invert a matrix 
 	public static double[][] invert(double a[][]) {
 		int n = a.length;
 		double x[][] = new double[n][n];
@@ -229,18 +218,14 @@ public class Main {
 		}
 		return x;
 	}
-
-// Method to carry out the partial-pivoting Gaussian
-// elimination.  Here index[] stores pivoting order.
-
+	// Method to carry out the partial-pivoting Gaussian
+	// elimination.  Here index[] stores pivoting order.
 	public static void gaussian(double a[][], int index[]) {
 		int n = index.length;
 		double c[] = new double[n];
-
 		// Initialize the index
 		for (int i = 0; i < n; ++i)
 			index[i] = i;
-
 		// Find the rescaling factors, one from each row
 		for (int i = 0; i < n; ++i) {
 			double c1 = 0;
@@ -251,7 +236,6 @@ public class Main {
 			}
 			c[i] = c1;
 		}
-
 		// Search the pivoting element from each column
 		int k = 0;
 		for (int j = 0; j < n - 1; ++j) {
@@ -264,17 +248,14 @@ public class Main {
 					k = i;
 				}
 			}
-
 			// Interchange rows according to the pivoting order
 			int itmp = index[j];
 			index[j] = index[k];
 			index[k] = itmp;
 			for (int i = j + 1; i < n; ++i) {
 				double pj = a[index[i]][j] / a[index[j]][j];
-
 				// Record pivoting ratios below the diagonal
 				a[index[i]][j] = pj;
-
 				// Modify other elements accordingly
 				for (int l = j + 1; l < n; ++l)
 					a[index[i]][l] -= pj * a[index[j]][l];
